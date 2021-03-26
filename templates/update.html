@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% block main %}
+<h1 class="bl_h1">実績 更新</h1>
+
+{% if user.is_authenticated and user.username == object.create_user %}
+
+
+<form method="POST" action="" class="bl_form" enctype="multipart/form-data">
+
+  {% csrf_token %}
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge bl_formBadge--required">必須</span>
+      <label for="ordered_services">サービスの種類</label>
+    </legend>
+    <select id="ordered_services" name="ordered_services" required>
+      <!-- <option value="" selected disabled>---</option> -->
+        <option value="LINEスタンプ" {% if object.ordered_services == "LINE絵文字" %}selected{% endif %}>LINEスタンプ</option>
+        <option value="LINE絵文字" {% if object.ordered_services == "LINE絵文字" %}selected{% endif %}>LINE絵文字</option>
+        <option value="イラスト" {% if object.ordered_services == "イラスト" %}selected{% endif %}>イラスト</option>
+        <option value="アイコン" {% if object.ordered_services == "アイコン" %}selected{% endif %}>アイコン</option>
+        <option value="キャラクター" {% if object.ordered_services == "キャラクター" %}selected{% endif %}>キャラクター</option>
+        <option value="名刺" {% if object.ordered_services == "名刺" %}selected{% endif %}>名刺</option>
+        <option value="その他" {% if object.ordered_services == "その他" %}selected{% endif %}>その他</option>
+
+    </select>
+  
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="ordered_services_memo">サービス内容のメモ</label>
+    </legend>
+    <textarea class="bl_pre" id="ordered_services_memo" name="ordered_services_memo" maxlength="1000" placeholder="サービス内容のメモを1000文字まで入力できます">{% if object.ordered_services_memo == "None" %}{% else %}{{ object.ordered_services_memo }}{% endif %}</textarea>
+  </fieldset>
+  
+  <fieldset class="bl_form_item hp_relative">
+      <legend class="bl_form_item_title">
+        <span class="bl_formBadge">任意</span>
+        <label for="thumbnail">
+          サムネイル
+        </label>
+      </legend>
+      {% if object.thumbnail %}
+        <div class="bl_form_thumbnailState">
+          <img src="/media/{{ object.thumbnail }}" alt="">
+          <label for="thumbnaiil-clear">選択されていたサムネイルを削除</label>
+          <input id="thumbnaiil-clear" type="checkbox" name="thumbnail-clear">
+        </div>
+      {% else %}
+        <p>
+          選択されていたサムネイルはありません
+        </p>
+      {% endif %}
+    <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge bl_formBadge--required">必須</span>
+      受注媒体
+    </legend>
+    <div class="bl_form_radioWrapper">
+  
+      <div>
+        <input id="ordered_media--homepage" {% if object.ordered_media == "ホームページ" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="ordered_media" value="ホームページ">
+        <label for="ordered_media--homepage" class="bl_form_radioLabel">
+          ホームページ
+        </label>
+      </div>
+  
+      <div>
+        <input id="ordered_media--coconala" {% if object.ordered_media == "ココナラ" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="ordered_media" value="ココナラ">
+        <label for="ordered_media--coconala" class="bl_form_radioLabel">
+          ココナラ
+        </label>
+      </div>
+  
+      <div>
+        <input id="ordered_media--sns" {% if object.ordered_media == "SNS" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="ordered_media" value="SNS">
+        <label for="ordered_media--sns" class="bl_form_radioLabel">
+          SNS
+        </label>
+      </div>
+  
+      <div>
+        <input id="ordered_media--direct" {% if object.ordered_media == "直接" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="ordered_media" value="直接">
+        <label for="ordered_media--direct" class="bl_form_radioLabel">
+          直接
+        </label>
+      </div>
+  
+      <div>
+        <input id="ordered_media--others" {% if object.ordered_media == "その他" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="ordered_media" value="その他">
+        <label for="ordered_media--others" class="bl_form_radioLabel">
+          その他
+        </label>
+      </div>
+  
+  </div>
+  
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge bl_formBadge--required">必須</span>
+      個人か法人か
+    </legend>
+    <div class="bl_form_radioWrapper">
+      <div>
+        <input id="personal_or_corporate--personal" {% if object.personal_or_corporate == "個人" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="personal_or_corporate" value="個人">
+        <label for="personal_or_corporate--personal" class="bl_form_radioLabel">
+          個人
+        </label>
+      </div>
+      <div>
+        <input id="personal_or_corporate--corporate" {% if object.personal_or_corporate == "法人" %}checked {% endif %}class="bl_form_radioButton" type="radio" name="personal_or_corporate" value="法人">
+        <label for="personal_or_corporate--corporate" class="bl_form_radioLabel">
+          法人
+        </label>
+      </div>
+    </div>
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="option">
+        オプション
+      </label>
+    </legend>
+    <textarea id="option" class="bl_pre" name="option" maxlength="500" placeholder="オプション">{% if object.option == "" %}{% else %}{{ object.option }}{% endif %}</textarea>
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="order_date">
+      受注日
+    </label>
+  </legend>
+    <input id="order_date" type="date" name="order_date" value="{{ object.order_date|date:'Y-m-d' }}">
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="delivery_date">
+      納品日
+    </label>
+    </legend>
+    <input id="delivery_date" type="date" name="delivery_date" value="{{ object.delivery_date|date:'Y-m-d' }}">
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="order_price">
+      受注額
+    </label>
+    </legend>
+    <input type="number" id="order_price" name="order_price" min="0" placeholder="0" value="{% if object.order_price == 0 %}{% else %}{{ object.order_price }}{% endif %}">
+  </fieldset>
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="sales_amount">
+      売上額
+    </label>
+    </legend>
+    <input type="number" id="sales_amount" name="sales_amount" min="0" placeholder="0" value="{% if object.sales_amount == 0 %}{% else %}{{ object.sales_amount }}{% endif %}">
+  </fieldset>
+  
+  
+  
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      評価
+    </legend>
+    <div class="bl_form_radioWrapper">
+  
+      <div>
+        <input id="review_count--five" class="bl_form_radioButton" type="radio" {% if object.review_count == 5 %}checked {% else %}{% endif %}name="review_count" value="5">
+        <label for="review_count--five" class="bl_form_radioLabel">5</label>
+      </div>
+  
+      <div>
+        <input id="review_count--four" class="bl_form_radioButton" type="radio" {% if object.review_count == 4 %}checked {% else %}{% endif %}name="review_count" value="4">
+        <label for="review_count--four" class="bl_form_radioLabel">4</label>
+      </div>
+  
+      <div>
+        <input id="review_count--three" class="bl_form_radioButton" type="radio" {% if object.review_count == 3 %}checked {% else %}{% endif %}name="review_count" value="3">
+        <label for="review_count--three" class="bl_form_radioLabel">3</label>
+      </div>
+  
+      <div>
+        <input id="review_count--two" class="bl_form_radioButton" type="radio" {% if object.review_count == 2 %}checked {% else %}{% endif %}name="review_count" value="2">
+        <label for="review_count--two" class="bl_form_radioLabel">2</label>
+      </div>
+  
+      <div>
+        <input id="review_count--one" class="bl_form_radioButton" type="radio" {% if object.review_count == 1 %}checked {% else %}{% endif %}name="review_count" value="1">
+        <label for="review_count--one" class="bl_form_radioLabel">1</label>
+      </div>
+  
+  
+  </div>
+  
+  </fieldset>
+  
+  
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="review_text">評価コメント</label> 
+    </legend>
+      <textarea id="review_text" class="bl_pre" name="review_text" placeholder="レビューのコメントを載せてください"></textarea>
+  </fieldset>
+  
+  <input type="hidden" name="create_user" value="{{ user.username }}">
+  
+  <div>
+    <button class="bl_updateButton" type="submit">
+      <span>
+        更新する
+      </span>
+      <span class="material-icons">
+        update
+      </span>
+    </button>
+  </div>
+  
+  </div>
+  
+  
+  </form>
+
+
+  {% else %}
+  ログインユーザーのみ閲覧可能です
+  {% endif %}
+
+
+
+
+
+
+
+
+{% endblock main %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="bl_h1">受注実績管理アプリ</h1>
+
+<div class="bl_index">
+
+  <h2>使い方</h2>
+
+
+  <ol class="bl_index_orderList">
+    <li>ユーザー登録</li>
+    <li>ログイン</li>
+    <li>受注実績の作成</li>
+    <li>受注実績の更新・削除</li>
+    <li>ログアウト</li>
+  </ol>
+
+
+  <div class="bl_index_section">
+    <h3>1. ユーザー登録</h3>
+    <p>
+      はじめて利用する方は、新規登録画面よりサインアップをしてください。
+    </p>
+  </div>
+
+  <div class="bl_index_section">
+    <h3>2. ログイン</h3>
+    <p>サインアップが済んだらログイン画面よりログインをしてください。</p>
+  </div>
+    
+  <div class="bl_index_section">
+    <h3>3. 受注実績の作成</h3>
+    <p>1,2 が済んだら受注実績の作成が出来ます。</p>
+    <p>一覧画面から作成した実績の確認ができ、それぞれの実績をクリックすると詳細へ画面へ遷移します。</p>
+    <p>納品日の入力をしなければ、未納品に分類されます。</p>
+  </div>
+
+  <div class="bl_index_section">
+    <h3>4. 更新・削除</h3>
+    <p>詳細ページより、作成した実績の更新・削除が可能です。</p>
+  </div>
+
+
+  <div class="bl_index_section">
+    <h3>5. ログアウト</h3>
+    <p>ログアウト画面よりログアウトが可能です。</p>
+  </div>
+
+
+  <p>
+  <a class="bl_link" href="{% url 'readme' %}">使用技術などはこちら</a>
+
+  </p>
+
+</div>
+
+
+
+{% endblock main %}

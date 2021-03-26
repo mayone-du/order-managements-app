@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="bl_h1">ログアウト</h1>
+
+<form method="POST" action="">
+  {% csrf_token %}
+
+  <h2>現在ログインしているアカウント</h2>
+  　<p>
+      {{ user.username }} からログアウトしますか？
+    </p>
+
+  <button class="bl_submitButton bl_logoutButton" type="submit">
+    <span>
+      ログアウト
+    </span>
+    <span class="material-icons">
+      logout
+    </span>
+  </button>
+</form>
+
+{% endblock main %}

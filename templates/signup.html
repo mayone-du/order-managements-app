@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<h1 class="bl_h1">新規登録（サインアップ）</h1>
+
+{% if user.is_authentication %}
+<p>
+  ユーザー登録を終えている方はログインしてください、
+  <a href="{% url 'login' %}">ログインはこちら</a>
+</p>
+{% endif %}
+
+{% if success %}
+  <p>成功しました。<a class="bl_link" href="{% url 'login' %}">ログインページ</a>よりログインしてください。</p>
+{% endif %}
+
+{% if error %}
+  <p class="bl_errorMessage">何らかのエラーが発生しました。ユーザーネームなどを変更して、もう一度入力してください。</p>
+{% endif %}
+
+{% if first %}
+  <p>新規登録をしてください。登録が済んでいる方は、ログインしてください。</p>
+{% endif %}
+<form class="bl_authForm" method="POST" action="">{% csrf_token %}
+
+  <fieldset>
+    <legend>
+      <label for="username">
+        ユーザーネーム
+      </label>
+    </legend>
+    <input id="username" type="text" name="username" placeholder="username" required>
+  </fieldset>
+  
+  <fieldset>
+    <legend>
+      <label for="email">
+        メールアドレス
+      </label>
+    </legend>
+    <input id="email" type="email" name="email" placeholder="example@info.com" required>
+  </fieldset>
+  
+  <fieldset>
+    <legend>
+      <label for="password">
+        パスワード
+      </label>
+    </legend>
+    <input id="password" type="password" name="password" placeholder="password" required>
+  </fieldset>
+  
+  <div>
+    <input type="submit" value="登録する">
+  </div>
+    
+
+</form>
+
+{% endblock main %}

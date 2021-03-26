@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<h1 class="bl_h1">プロフィール</h1>
+<div class="bl_profile">
+{% if profile.pk == user.pk %}
+<h2>ログインユーザーの詳細情報</h2>
+
+<div class="bl_profile_item">
+  <p>ユーザーID</p>
+  <p>{{ profile.pk }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>ユーザーネーム</p>
+  <p>{{ profile.username }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>メールアドレス</p>
+  <p>{{ profile.email }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>アカウント作成日時</p>
+  <p>{{ profile.date_joined|date:"Y-m-d （D） H:i" }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>最終ログイン</p>
+  <p>{{ profile.last_login|date:"Y-m-d （D） H:i" }}</p>
+</div>
+
+
+{% else %}
+<h2>その他のユーザー情報は見れません</h2>
+{% endif %}
+</div>
+
+
+{% endblock main %}

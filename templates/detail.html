@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<h1 class="bl_h1">実績 詳細</h1>
+
+{% if user.is_authenticated and user.username == object.create_user %}
+
+<div class="bl_detailPage">
+
+<ul class="bl_detail">
+  {% if object.thumbnail %}
+  <li class="bl_detailImageList">
+    <img src="{{ object.thumbnail.url }}" alt="">
+  </li>
+  {% else %}
+  <li class="bl_detailNoImageList">
+    NO IMAGE
+  </li>
+  {% endif %}
+
+
+  <!-- <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      ID
+    </div>
+    <div class="bl_detail_list_content">
+      {{ object.pk }}
+    </div>
+  </li> -->
+
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      受注したサービス
+    </div>
+    <div class="bl_detail_list_content">
+      {{ object.ordered_services }}
+    </div>
+  </li>
+
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      メモ
+    </div>
+    <pre class="bl_detail_list_content bl_pre">{% if object.ordered_services_memo == "" %}なし{% else %}{{ object.ordered_services_memo }}{% endif %}</pre>
+  </li>
+
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      受注媒体
+    </div>
+    <div class="bl_detail_list_content">
+      {{ object.ordered_media }}
+    </div>
+  </li>
+
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      オプション
+    </div>
+    <pre class="bl_detail_list_content bl_pre">{% if object.option == "" %}なし{% else %}{{ object.option }}{% endif %}</pre>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      相手
+    </div>
+    <div class="bl_detail_list_content">
+      {{ object.personal_or_corporate }}
+    </div>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      受注日
+    </div>
+    <div class="bl_detail_list_content">
+      {% if object.order_date == None %}
+        未定
+      {% else %}
+        {{ object.order_date|date:"Y/m/d (D)" }}
+      {% endif %}
+    </div>
+  </li>
+
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      納品日
+    </div>
+    <div class="bl_detail_list_content">
+      {% if object.delivery_date == None %}
+        未定
+      {% else %}
+        {{ object.delivery_date|date:"Y/m/d (D)" }}
+      {% endif %}
+    </div>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      受注額
+    </div>
+    <div class="bl_detail_list_content">
+      {% if object.order_price == None %}
+        未定
+      {% else %}
+        <span class="el_price">{{ object.order_price }}</span>&nbsp;円
+      {% endif %}
+    </div>
+  </li>
+
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      売上額
+    </div>
+    <div class="bl_detail_list_content">
+      {% if object.sales_amount == None %}
+        未定
+      {% else %}
+        <span class="el_price">{{ object.sales_amount }}</span>&nbsp;円
+      {% endif %}
+    </div>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      評価
+    </div>
+    <div class="bl_detail_list_content">
+      {% if object.review_count == None %}
+        未定
+      {% else %}
+        {{ object.review_count }}.0
+      {% endif %}
+    </div>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      レビュー
+    </div>
+    <pre class="bl_detail_list_content bl_pre">{% if object.review_text == "" %}なし{% else %}{{ object.review_text }}{% endif %}</pre>
+  </li>
+  
+  <li class="bl_detail_list">
+    <div class="bl_detail_list_title">
+      作成者
+    </div>
+    <div class="bl_detail_list_content">
+      {{ object.create_user }}
+    </div>
+  </li>
+  
+
+</ul>
+
+
+<div class="bl_detailPage_linkWrapper">
+  <a class="bl_detail_link bl_detail_editButton" href="{% url 'update' object.pk %}">
+    <span>
+      編集する
+    </span>
+    <span class="material-icons">
+      draw
+    </span>
+  </a>
+
+  <a class="bl_detail_link bl_detail_deleteButton" href="{% url 'delete' object.pk %}">
+    <span>
+      削除
+    </span>
+  <span class="material-icons">
+    delete
+  </span>
+  </a>
+</div>
+</div>
+
+{% else %}
+作成したログインユーザーのみ閲覧可能です
+{% endif %}
+
+
+{% endblock main %}

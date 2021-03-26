@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="bl_h1">実績一覧</h1>
+
+
+
+{% if user.is_authenticated %}
+
+<div class="bl_listSummary">
+  <div class="bl_listSummary_item">
+    <div class="bl_listSummary_item_title">
+      <span class="material-icons">
+        grid_view
+      </span>
+      総実績
+    </div>
+    <div class="bl_listSummary_item_content">
+      <span>{{ all_orderes }}</span>件
+      （納品済み<span>{{ delivered_count }}</span>件、
+      未納品<span>{{ un_delivered_count }}</span>件）
+    </div>
+
+  </div>
+  
+  
+  <div class="bl_listSummary_item">
+    <div class="bl_listSummary_item_title">
+      <span class="material-icons">
+        trending_up
+      </span>
+      売上総額
+      <!-- &nbsp;(受注総額) -->
+    </div>
+    <div class="bl_listSummary_item_content">
+      <span class="el_price">
+        {% if sales_amount.total_num %}
+          {{ sales_amount.total_num }}
+        {% else %}
+          0
+        {% endif %}
+      </span>
+      円
+      （受注総額<span class="el_price">
+        {% if order_price.total_num %}
+          {{ order_price.total_num }}
+        {% else %}
+          0
+        {% endif %}
+      </span>
+      円）
+    </div>
+  </div>
+
+  <div class="bl_listSummary_item">
+    <div class="bl_listSummary_item_title">
+      <span class="material-icons">
+        star
+      </span>
+      平均評価
+    </div>
+    <div class="bl_listSummary_item_content">
+      <span>
+        {% if review_count_avg.avg_count == 1 or review_count_avg.avg_count == 2 or review_count_avg.avg_count == 3 or review_count_avg.avg_count == 4 or review_count_avg.avg_count == 5 %}
+          {{ review_count_avg.avg_count|floatformat }}.0
+        {% elif review_count.avg_count == None %}
+          0
+        {% else %}
+          {{ review_count_avg.avg_count|floatformat }}
+        {% endif %}
+      </span>/5.0
+    </div>
+  </div>
+<!-- 
+  <p>
+    納品日が古い順とかの並び替えしたい
+    <br>
+    今は納品した日が古い順に表示
+  </p> -->
+</div>
+
+
+
+
+<div class="bl_tabButtonWrapper">
+  <button class="bl_tabButton_all st_isActive">全て</button>
+  <button class="bl_tabButton_delivered">納品済み</button>
+  <button class="bl_tabButton_unDelivered">未納品</button>
+</div>
+
+
+<!-- 全ての一覧 -->
+<ul class="bl_listWrapper bl_listWrapper_all st_isActive">
+{% for item in object_list %}
+<li class="bl_list">
+  <a href="{% url 'detail' item.pk %}">
+    <span class="bl_list_number">{{ forloop.counter }}</span>
+
+    {% if item.delivery_date == None %}
+      <span class="bl_list_ribbon">未納品</span>
+    {% endif %}
+
+
+    <div class="bl_list_contentsWrapper">
+      {% if item.thumbnail %}
+      <div class="bl_list_thumbnailWrapper">
+        <img class="bl_list_thumbnail" src="{{ item.thumbnail.url }}" alt="画像が削除されました。">
+      </div>
+      {% else %}
+      <div class="bl_list_thumbnailWrapper">
+        <div class="bl_list_thumbnail">
+          No Image
+        </div>
+      </div>
+      {% endif %}
+      <div class="bl_list_textContents">
+        <h3 class="bl_list_textContents_orderedServices">
+          {{ item.ordered_services }}
+          <span>の依頼</span>
+        </h3>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注媒体
+          </dt>
+          <dd>
+            {{ item.ordered_media }}
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注日 - 納品日
+          </dt>
+          <dd>
+            {% if item.delivery_date == None %}
+              <span class="hp_text">未定</span>
+            {% else %}
+              {{ item.order_date|date:"Y/m/d" }}
+            {% endif %}
+
+            -
+
+            {% if item.delivery_date == None %}
+              <span class="hp_textRed">未定</span>
+            {% else %}
+              {{ item.delivery_date|date:"Y/m/d" }}
+            {% endif %}
+          </dd>
+        </dl>
+
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注額 - 売上額
+          </dt>
+          <dd>
+            <span class="el_price">
+              {% if item.order_price %}
+                {{ item.order_price }}
+              {% else %}
+                0
+              {% endif %}
+            </span>&nbsp;円
+            -
+            <span class="el_price">
+              {% if item.sales_amount %}
+                {{ item.sales_amount }}
+              {% else %}
+                0
+              {% endif %}
+            </span>&nbsp;円
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            評価
+          </dt>
+          <dd>
+            {% if item.review_count == None %}
+              なし
+            {% else %}
+              {{ item.review_count }}.0 / 5.0
+            {% endif %}
+          </dd>
+        </dl>
+
+        <div class="bl_list_tagWrapper">
+        {% if item.ordered_services_memo %}
+          <span class="bl_list_tag">
+            <span class="material-icons">text_snippet</span>
+          </span>
+        {% endif %}
+        {% if item.option %}
+          <span class="bl_list_tag">
+            <span class="material-icons">settings</span>
+          </span>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </a>
+</li>
+{% endfor %}
+</ul>
+
+
+
+<!-- 納品済みの一覧 -->
+<ul class="bl_listWrapper bl_listWrapper_delivered st_isDisabled">
+{% for item in delivered_list %}
+<li class="bl_list">
+  <a href="{% url 'detail' item.pk %}">
+    <span class="bl_list_number">{{ forloop.counter }}</span>
+    <div class="bl_list_contentsWrapper">
+      {% if item.thumbnail %}
+      <div class="bl_list_thumbnailWrapper">
+        <img class="bl_list_thumbnail" src="{{ item.thumbnail.url }}" alt="">
+      </div>
+      {% else %}
+      <div class="bl_list_thumbnailWrapper">
+        <div class="bl_list_thumbnail">
+          No Image
+        </div>
+      </div>
+      {% endif %}
+      <div class="bl_list_textContents">
+        <h3 class="bl_list_textContents_orderedServices">
+          {{ item.ordered_services }}
+          <span>の依頼</span>
+        </h3>
+
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注媒体
+          </dt>
+          <dd>
+            {{ item.ordered_media }}
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注日 - 納品日
+          </dt>
+          <dd>
+            {% if item.delivery_date == None %}
+              未定
+            {% else %}
+              {{ item.order_date|date:"Y/m/d" }}
+            {% endif %}
+
+            -
+
+            {% if item.delivery_date == None %}
+              未定
+            {% else %}
+              {{ item.delivery_date|date:"Y/m/d" }}
+            {% endif %}
+          </dd>
+        </dl>
+
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注額 - 売上額
+          </dt>
+          <dd>
+            <span class="el_price">{{ item.order_price }}</span>&nbsp;円
+            -
+            <span class="el_price">{{ item.sales_amount }}</span>&nbsp;円
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            評価
+          </dt>
+          <dd>
+            {% if item.review_count == None %}
+              なし
+            {% else %}
+              {{ item.review_count }}.0 / 5.0
+            {% endif %}
+          </dd>
+        </dl>
+
+        <div class="bl_list_tagWrapper">
+        {% if item.ordered_services_memo %}
+          <span class="bl_list_tag">
+            <span class="material-icons">text_snippet</span>
+          </span>
+        {% endif %}
+        {% if item.option %}
+          <span class="bl_list_tag">
+            <span class="material-icons">settings</span>
+          </span>
+        {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </a>
+</li>
+{% endfor %}
+</ul>
+
+
+
+
+<!-- 未納品の一覧 -->
+<ul class="bl_listWrapper bl_listWrapper_unDelivered st_isDisabled">
+{% for item in un_delivered_list %}
+<li class="bl_list">
+  <a href="{% url 'detail' item.pk %}">
+    <span class="bl_list_number">{{ forloop.counter }}</span>
+    <span class="bl_list_ribbon">未納品</span>
+    <div class="bl_list_contentsWrapper">
+      {% if item.thumbnail %}
+      <div class="bl_list_thumbnailWrapper">
+        <img class="bl_list_thumbnail" src="{{ item.thumbnail.url }}" alt="">
+      </div>
+      {% else %}
+      <div class="bl_list_thumbnailWrapper">
+        <div class="bl_list_thumbnail">
+          No Image
+        </div>
+      </div>
+      {% endif %}
+      <div class="bl_list_textContents">
+        <h3 class="bl_list_textContents_orderedServices">
+          {{ item.ordered_services }}
+          <span>の依頼</span>
+        </h3>
+
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注媒体
+          </dt>
+          <dd>
+            {{ item.ordered_media }}
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注日 - 納品日
+          </dt>
+          <dd>
+            {% if item.delivery_date == None %}
+              未定
+            {% else %}
+              {{ item.order_date|date:"Y/m/d" }}
+            {% endif %}
+
+            -
+
+            {% if item.delivery_date == None %}
+              未定
+            {% else %}
+              {{ item.delivery_date|date:"Y/m/d" }}
+            {% endif %}
+          </dd>
+        </dl>
+
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            受注額 - 売上額
+          </dt>
+          <dd>
+            <span class="el_price">{{ item.order_price }}</span>&nbsp;円
+            -
+            <span class="el_price">{{ item.sales_amount }}</span>&nbsp;円
+          </dd>
+        </dl>
+
+        <dl class="bl_list_textContents_row">
+          <dt>
+            評価
+          </dt>
+          <dd>
+            {% if item.review_count == None %}
+              なし
+            {% else %}
+              {{ item.review_count }}.0 / 5.0
+            {% endif %}
+          </dd>
+        </dl>
+
+        <div class="bl_list_tagWrapper">
+        {% if item.ordered_services_memo %}
+          <span class="bl_list_tag">
+            <span class="material-icons">text_snippet</span>
+          </span>
+        {% endif %}
+        {% if item.option %}
+          <span class="bl_list_tag">
+            <span class="material-icons">settings</span>
+          </span>
+        {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </a>
+</li>
+{% endfor %}
+</ul>
+
+{% else %}
+  ログイン後に使用可能です
+{% endif %}
+
+{% endblock main %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/destyle.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="apple-touch-icon" href="/media/apple-touch-icon.png" sizes="180x180">
+  <script src="/static/index.js" defer></script>
+  
+  <title>受注実績管理アプリ | {% if user.username%}{{ user.username }}{% else %}ログインしてください。{% endif %}</title>
+</head>
+<body>
+  <div class="ly_allWrapper">
+
+
+    <div class="ly_contents">
+
+      <header class="bl_header">
+        <div class="bl_header_inner">
+        <h2 class="bl_logo">
+          Developed by Yuki Ishikawa&nbsp;<span>:)</span>
+        </h2>
+        <nav>
+          <ul>
+            <li>
+              <a href="{% url 'list' %}">
+                <span class="material-icons">
+                  list
+                </span>
+                <span>
+                  一覧
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'index' %}">
+                <span class="material-icons">
+                  manage_search
+                </span>
+                <span>
+                  使い方
+                </span>
+              </a>
+            </li>
+
+            {% if not user.is_authenticated %}
+            <li>
+              <a href="{% url 'signup' %}">
+                <span class="material-icons">
+                  person_add
+                </span>
+                <span>
+                  新規登録
+                </span>
+              </a>
+            </li>
+            {% endif %}
+
+
+            {% if not user.is_authenticated %}
+            <li>
+              <a href="{% url 'login' %}">
+                <span class="material-icons">
+                  login
+                </span>
+                <span>
+                  ログイン
+                </span>
+              </a>
+            </li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'logout' %}">
+                <span class="material-icons">
+                  logout
+                </span>
+                <span>
+                  ログアウト
+                </span>
+              </a>
+            </li>
+            {% endif %}
+          
+            {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'profile' user.pk %}">
+                <span class="material-icons">
+                  account_circle
+                </span>
+                <span>
+                  プロフィール
+                </span>
+              </a>
+            </li>
+            {% endif %}
+            <li>
+              <a class="bl_header_createButton" href="{% url 'create' %}">
+                <span class="material-icons">
+                  add
+                </span>
+                <span>
+                  作成
+                </span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+    
+      <main class="ly_main">
+      {% block main %}
+      
+      {% endblock main %}
+      </main>
+    
+    </div>
+  
+  </div>
+</body>
+</html>
+
+
+

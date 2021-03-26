@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% if user.is_authenticated and user.username == object.create_user %}
+<h1 class="bl_h1">実績 削除</h1>
+
+<div class="bl_profile_item">
+  <p>受注したサービス</p>
+  <p>{{ object.ordered_services }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>受注日</p>
+  <p>{{ object.order_date }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>納品日</p>
+  <p>{{ object.delivery_date }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>受注額</p>
+  <p>{{ object.order_price }}</p>
+</div>
+
+<div class="bl_profile_item">
+  <p>納品額</p>
+  <p>{{ profile.sales_amount }}</p>
+</div>
+
+
+<form method="POST" action="" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+
+
+  <input type="submit" class="bl_deleteButton" value="削除する">
+
+</form>
+
+{% else %}
+作成したログインユーザーのみ閲覧可能です
+{% endif %}
+
+
+{% endblock main %}

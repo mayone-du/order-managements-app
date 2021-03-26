@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="bl_h1">ログイン画面</h1>
+<p>
+  まだユーザー登録をしていない方は新規登録をしてください。
+  <div>
+    <a class="bl_link" href="{% url 'signup' %}">新規登録はこちら</a>
+  </div>
+</p>
+
+{% if error %}
+<p class="bl_errorMessage">
+  ログインエラーが発生しました。もう一度内容を確認してログインしてください。
+</p>
+  {% endif %}
+<form class="bl_authForm" method="POST" action="">{% csrf_token %}
+  <fieldset>
+    <legend>
+      <label for="username">
+        ユーザーネーム
+      </label>
+    </legend>
+    <input id="username" type="text" name="username" placeholder="username" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>
+      <label for="email">メールアドレス</label>
+    </legend>
+    <input type="email" name="email" placeholder="example@info.com" required>
+  </fieldset>
+
+  
+  <fieldset>
+    <legend>
+      <label for="password">
+        パスワード
+      </label>
+    </legend>
+    <input type="password" name="password" placeholder="password" required>
+  </fieldset>
+  
+  <div>
+    <input type="submit" value="ログインする">
+  </div>
+
+</form>
+
+
+{% endblock main %}

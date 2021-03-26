@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="bl_h1">実績 作成</h1>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="" class="bl_form" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge bl_formBadge--required">必須</span>
+    <label for="ordered_services">サービスの種類</label>
+  </legend>
+  <select id="ordered_services" name="ordered_services" required>
+    <option value="" selected disabled>---</option>
+    <option value="LINEスタンプ">LINEスタンプ</option>
+    <option value="LINE絵文字">LINE絵文字</option>
+    <option value="イラスト">イラスト</option>
+    <option value="アイコン">アイコン</option>
+    <option value="キャラクター">キャラクター</option>
+    <option value="名刺">名刺</option>
+    <option value="その他">その他</option>
+  </select>
+
+</fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    <label for="ordered_services_memo">サービス内容のメモ</label>
+  </legend>
+  <textarea class="bl_pre" id="ordered_services_memo" name="ordered_services_memo" maxlength="1000" placeholder="サービス内容のメモを1000文字まで入力できます"></textarea>
+</fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    <label for="thumbnail">
+      サムネイル
+    </label>
+  </legend>
+  <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+</fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge bl_formBadge--required">必須</span>
+    受注媒体
+  </legend>
+  <div class="bl_form_radioWrapper">
+
+    <div>
+      <input id="ordered_media--homepage" class="bl_form_radioButton" type="radio" name="ordered_media" value="ホームページ">
+      <label for="ordered_media--homepage" class="bl_form_radioLabel">
+        ホームページ
+      </label>
+    </div>
+
+    <div>
+      <input id="ordered_media--coconala" class="bl_form_radioButton" type="radio" name="ordered_media" value="ココナラ">
+      <label for="ordered_media--coconala" class="bl_form_radioLabel">
+        ココナラ
+      </label>
+    </div>
+
+    <div>
+      <input id="ordered_media--sns" class="bl_form_radioButton" type="radio" name="ordered_media" value="SNS">
+      <label for="ordered_media--sns" class="bl_form_radioLabel">
+        SNS
+      </label>
+    </div>
+
+    <div>
+      <input id="ordered_media--direct" class="bl_form_radioButton" type="radio" name="ordered_media" value="直接">
+      <label for="ordered_media--direct" class="bl_form_radioLabel">
+        直接
+      </label>
+    </div>
+
+    <div>
+      <input id="ordered_media--others" class="bl_form_radioButton" type="radio" name="ordered_media" value="その他">
+      <label for="ordered_media--others" class="bl_form_radioLabel">
+        その他
+      </label>
+    </div>
+
+</div>
+
+
+</fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge bl_formBadge--required">必須</span>
+    個人か法人か
+  </legend>
+  <div class="bl_form_radioWrapper">
+    <div>
+      <input id="personal_or_corporate--personal" class="bl_form_radioButton" type="radio" name="personal_or_corporate" value="個人">
+      <label for="personal_or_corporate--personal" class="bl_form_radioLabel">
+        個人
+      </label>
+    </div>
+    <div>
+      <input id="personal_or_corporate--corporate" class="bl_form_radioButton" type="radio" name="personal_or_corporate" value="法人">
+      <label for="personal_or_corporate--corporate" class="bl_form_radioLabel">
+        法人
+      </label>
+    </div>
+  </div>
+</fieldset>
+
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="option">
+        オプション
+      </label>
+    </legend>
+    <textarea id="option" class="bl_pre" name="option" maxlength="500" placeholder="オプション"></textarea>
+  </fieldset>
+  
+<div class="bl_formGroup">
+  <fieldset class="bl_form_item">
+    <legend class="bl_form_item_title">
+      <span class="bl_formBadge">任意</span>
+      <label for="order_date">
+      受注日
+    </label>
+  </legend>
+    <input id="order_date" type="date" name="order_date">
+  </fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    <label for="delivery_date">
+    納品日
+  </label>
+  </legend>
+  <input id="delivery_date" type="date" name="delivery_date">
+</fieldset>
+</div>
+
+<div class="bl_formGroup">
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    <label for="order_price">
+    受注額
+  </label>
+  </legend>
+  <input type="number" id="order_price" name="order_price" min="0" placeholder="0">
+</fieldset>
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    <label for="sales_amount">
+    売上額
+  </label>
+  </legend>
+  <input type="number" id="sales_amount" name="sales_amount" min="0" placeholder="0">
+</fieldset>
+</div>
+
+
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+    <span class="bl_formBadge">任意</span>
+    評価
+  </legend>
+  <div class="bl_form_radioWrapper">
+
+    <div>
+      <input id="review_count--five" class="bl_form_radioButton" type="radio" name="review_count" value="5">
+      <label for="review_count--five" class="bl_form_radioLabel">5</label>
+    </div>
+
+    <div>
+      <input id="review_count--four" class="bl_form_radioButton" type="radio" name="review_count" value="4">
+      <label for="review_count--four" class="bl_form_radioLabel">4</label>
+    </div>
+
+    <div>
+      <input id="review_count--three" class="bl_form_radioButton" type="radio" name="review_count" value="3">
+      <label for="review_count--three" class="bl_form_radioLabel">3</label>
+    </div>
+
+    <div>
+      <input id="review_count--two" class="bl_form_radioButton" type="radio" name="review_count" value="2">
+      <label for="review_count--two" class="bl_form_radioLabel">2</label>
+    </div>
+
+    <div>
+      <input id="review_count--one" class="bl_form_radioButton" type="radio" name="review_count" value="1">
+      <label for="review_count--one" class="bl_form_radioLabel">1</label>
+    </div>
+
+
+</div>
+
+</fieldset>
+
+
+<fieldset class="bl_form_item">
+  <legend class="bl_form_item_title">
+  <span class="bl_formBadge">任意</span>
+    <label for="review_text">評価コメント</label> 
+  </legend>
+    <textarea id="review_text" class="bl_pre" name="review_text" placeholder="レビューのコメントを載せてください"></textarea>
+</fieldset>
+
+<input type="hidden" name="create_user" value="{{ user.username }}">
+
+<div>
+  <button class="bl_createButton" type="submit">
+    <span>
+      作成する
+    </span>
+    <span class="material-icons">
+      add
+    </span>
+  </button>
+</div>
+
+</div>
+
+
+</form>
+{% else %}
+
+ログイン後に作成可能です。
+{% endif %}
+
+
+
+{% endblock main %}
