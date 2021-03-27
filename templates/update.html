@@ -134,6 +134,7 @@
     <textarea id="option" class="bl_pre" name="option" maxlength="500" placeholder="オプション">{% if object.option == "" %}{% else %}{{ object.option }}{% endif %}</textarea>
   </fieldset>
   
+<div class="bl_formGroup">
   <fieldset class="bl_form_item">
     <legend class="bl_form_item_title">
       <span class="bl_formBadge">任意</span>
@@ -153,7 +154,10 @@
     </legend>
     <input id="delivery_date" type="date" name="delivery_date" value="{{ object.delivery_date|date:'Y-m-d' }}">
   </fieldset>
-  
+</div>
+
+<div class="bl_formGroup">
+
   <fieldset class="bl_form_item">
     <legend class="bl_form_item_title">
       <span class="bl_formBadge">任意</span>
@@ -173,8 +177,7 @@
     </legend>
     <input type="number" id="sales_amount" name="sales_amount" min="0" placeholder="0" value="{% if object.sales_amount == 0 %}{% else %}{{ object.sales_amount }}{% endif %}">
   </fieldset>
-  
-  
+</div>
   
   
   <fieldset class="bl_form_item">
