@@ -13,6 +13,7 @@ def indexfunc(request):
   return render(request, "index.html", {})
 
 
+
 class OrderList(ListView):
   template_name = "list.html"
   model = OrderManagementsModel
